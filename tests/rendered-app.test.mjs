@@ -32,13 +32,14 @@ test("server-renders the finished transliterator", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>Польская кириллица — транслитератор<\/title>/i);
-  assert.match(html, /Польский,/);
-  assert.match(html, /по-кириллически\./);
+  assert.match(html, /Польская кириллица/);
   assert.match(html, /<textarea[^>]*id="polish-input"/i);
-  assert.match(html, /Шмяло! То пешнь пржышлошчи\./);
+  assert.match(html, /Результат появится здесь/);
   assert.match(html, /aria-live="polite"/i);
-  assert.match(html, /og\.png/i);
-  assert.doesNotMatch(html, /codex-preview|Building your site|SkeletonPreview/i);
+  assert.doesNotMatch(
+    html,
+    /Польский,|по-кириллически|Попробуйте на примере|В основе|og\.png|codex-preview|Building your site|SkeletonPreview/i,
+  );
 });
 
 test("removes disposable starter assets and metadata", async () => {
@@ -50,8 +51,9 @@ test("removes disposable starter assets and metadata", async () => {
 
   assert.match(page, /transliteratePolish/);
   assert.match(page, /navigator\.clipboard\.writeText/);
-  assert.match(layout, /generateMetadata/);
+  assert.match(layout, /export const metadata/);
   assert.match(layout, /Польская кириллица — транслитератор/);
+  assert.doesNotMatch(page, /EXAMPLES|principles|rule-ribbon|hero/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview/);
   assert.doesNotMatch(layout, /Starter Project|next\/font/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton|site-creator-vinext-starter/);
