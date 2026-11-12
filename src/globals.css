@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root {
   --ink: #1c2326;
   --muted: #747b7d;
@@ -15,7 +13,8 @@
 }
 
 html,
-body {
+body,
+#root {
   min-height: 100%;
 }
 
@@ -42,7 +41,7 @@ textarea:focus-visible {
 }
 
 .app-shell {
-  width: min(1100px, calc(100% - 40px));
+  width: min(1320px, calc(100% - 40px));
   min-height: 100vh;
   margin: 0 auto;
   padding: 22px 0 32px;
@@ -82,14 +81,6 @@ textarea:focus-visible {
   font-size: 20px;
 }
 
-.app-version {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-
 .translit-card {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -101,41 +92,47 @@ textarea:focus-visible {
 .card-topline {
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 48px;
-  padding: 0 22px;
+  min-height: 58px;
+  padding: 9px 16px;
   border-bottom: 1px solid var(--line);
+}
+
+.mode-switch {
+  display: flex;
+  gap: 7px;
+}
+
+.mode-button {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 9px 13px;
+  background: transparent;
   color: var(--muted);
+  cursor: pointer;
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: .12em;
+  letter-spacing: .08em;
 }
 
-.language-active {
+.mode-button.is-active {
+  border-color: rgba(207, 56, 47, .28);
+  background: rgba(207, 56, 47, .08);
   color: var(--red);
-}
-
-.direction-arrow {
-  color: #a8acad;
-  font-size: 15px;
 }
 
 .editor-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
-  min-height: clamp(360px, 58vh, 610px);
+  align-items: stretch;
 }
 
 .editor-pane {
   position: relative;
-  display: flex;
   min-width: 0;
-  flex-direction: column;
   padding: 26px 28px 44px;
 }
 
-.editor-pane label,
-.pane-label {
+.editor-pane label {
   display: block;
   margin: 0 0 16px;
   color: var(--muted);
@@ -145,23 +142,31 @@ textarea:focus-visible {
   text-transform: uppercase;
 }
 
-.editor-pane textarea {
+.input-field,
+.output-text {
+  display: block;
   width: 100%;
-  min-height: 260px;
-  flex: 1;
-  resize: none;
+  height: clamp(440px, 64vh, 760px);
+  min-height: 320px;
+  resize: vertical;
   border: 0;
   outline: 0;
   background: transparent;
   color: var(--ink);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(24px, 2.7vw, 34px);
+  font-size: clamp(24px, 2.6vw, 36px);
   line-height: 1.42;
   caret-color: var(--red);
 }
 
-.editor-pane textarea::placeholder {
-  color: #b4b5b1;
+.input-field::placeholder,
+.output-text::placeholder {
+  color: #aaa9a4;
+  font-style: italic;
+}
+
+.output-text {
+  cursor: text;
 }
 
 .editor-divider {
@@ -170,24 +175,6 @@ textarea:focus-visible {
 
 .output-pane {
   background: var(--surface-muted);
-}
-
-.output-text {
-  min-height: 260px;
-  flex: 1;
-  overflow-y: auto;
-  color: var(--ink);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(24px, 2.7vw, 34px);
-  line-height: 1.42;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.output-text.is-empty {
-  color: #aaa9a4;
-  font-size: 20px;
-  font-style: italic;
 }
 
 .char-count {
@@ -257,6 +244,11 @@ textarea:focus-visible {
 }
 
 @media (hover: hover) {
+  .mode-button:not(.is-active):hover {
+    background: var(--surface-muted);
+    color: var(--ink);
+  }
+
   .copy-button:not(:disabled):hover {
     background: #313a3d;
   }
@@ -272,7 +264,7 @@ textarea:focus-visible {
 
 @media (max-width: 760px) {
   .app-shell {
-    width: min(100% - 24px, 1100px);
+    width: min(100% - 24px, 1320px);
     padding-top: 12px;
   }
 
@@ -283,7 +275,18 @@ textarea:focus-visible {
 
   .editor-grid {
     grid-template-columns: 1fr;
-    min-height: 0;
+  }
+
+  .card-topline {
+    padding-inline: 10px;
+  }
+
+  .mode-switch {
+    width: 100%;
+  }
+
+  .mode-button {
+    flex: 1;
   }
 
   .editor-divider {
@@ -292,13 +295,13 @@ textarea:focus-visible {
   }
 
   .editor-pane {
-    min-height: 310px;
     padding: 22px 20px 40px;
   }
 
-  .editor-pane textarea,
+  .input-field,
   .output-text {
-    min-height: 210px;
+    height: clamp(320px, 52vh, 560px);
+    min-height: 260px;
   }
 
   .char-count {

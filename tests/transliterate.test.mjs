@@ -62,7 +62,7 @@ const specificationExamples = [
   ["trzy", "тржы"],
   ["krzyk", "кржык"],
   ["przyszłość", "пржышлошчь"],
-  ["chleb", "хлэб"],
+  ["chleb", "хлеб"],
   ["próg", "пруг"],
   ["człowiek", "чловек"],
   ["ludzie", "людже"],
